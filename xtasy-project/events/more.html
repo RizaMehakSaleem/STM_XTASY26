@@ -4,6 +4,8 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Additional Events — XTASY Festival</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Rajdhani:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet"/>
 <style>
   body { background:#020408; color:#e0eaf5; font-family:'Rajdhani',sans-serif; min-height:100vh; padding:24px; }
   h1 { font-family:'Bebas Neue',sans-serif; color:#00f5ff; }
@@ -11,7 +13,17 @@
   table { width:100%; border-collapse: collapse; margin-top: 16px; }
   th,td { border:1px solid rgba(0,245,255,0.2); padding:10px; text-align:left; font-size:13px; }
   th { background: rgba(0,245,255,0.1); }
-  .back { margin-top: 18px; color:#00f5ff; text-decoration:none; font-weight:600; }
+  .cta-row { margin-top: 22px; display:flex; justify-content:center; }
+  .nav-cta {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.75rem; letter-spacing: 3px;
+    color: #020408; background: #00f5ff;
+    border: none; padding: 12px 22px; cursor: pointer;
+    text-decoration: none; display: inline-block;
+    clip-path: polygon(10px 0%, 100% 0%, calc(100% - 10px) 100%, 0% 100%);
+    transition: background 0.3s, box-shadow 0.3s, transform 0.2s;
+  }
+  .nav-cta:hover { background: #ff006e; box-shadow: 0 0 24px rgba(255,0,110,0.65); transform: translateY(-1px); }
 </style>
 </head>
 <body>
@@ -51,7 +63,9 @@
         <tr><td>28</td><td>Mr & Mrs XTASY</td><td>Cultural</td><td>Multi-round personality contest</td></tr>
       </tbody>
     </table>
-    <p class="back"><a href="../index.html">← Back to Dashboard</a></p>
+    <div class="cta-row">
+      <a class="nav-cta" href="../index.html">GO BACK TO DASHBOARD →</a>
+    </div>
   </div>
 </body>
 </html>
