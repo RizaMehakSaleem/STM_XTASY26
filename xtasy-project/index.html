@@ -284,6 +284,13 @@
     grid-template-columns: repeat(3, 1fr);
     gap: 2px; margin-top: 60px;
   }
+  .battlezone-grid {
+    grid-template-columns: 1fr;
+    gap: 18px;
+    max-width: 900px;
+    margin: 60px auto 0;
+  }
+  .event-card.static { cursor: default; }
   .event-card {
     background: var(--glass);
     border: 1px solid var(--border);
@@ -394,11 +401,8 @@
     background: #000;
   }
 
-  /* ROBOWARS / HIGHLIGHT SECTION */
-  #highlight {
-    padding: 0; overflow: hidden; position: relative;
-    min-height: 70vh; display: flex; align-items: center;
-  }
+  /* CULTURAL SECTION */
+  #cultural { padding: 100px 48px; }
   .highlight-bg {
     position: absolute; inset: 0;
     background: linear-gradient(135deg, rgba(255,0,110,0.05) 0%, var(--bg) 60%);
@@ -727,7 +731,6 @@
   <ul class="nav-links" style="counter-reset: nav-item">
     <li><a href="#hero" onclick="scrollToSection(event,'hero')">Home</a></li>
     <li><a href="#events" onclick="scrollToSection(event,'events')">Events</a></li>
-    <li><a href="#highlight" onclick="scrollToSection(event,'highlight')">Battlezone</a></li>
     <li><a href="#proshow" onclick="scrollToSection(event,'proshow')">Proshow</a></li>
     <li><a href="#schedule" onclick="scrollToSection(event,'schedule')">Schedule</a></li>
     <li><a href="#scoreboard" onclick="scrollToSection(event,'scoreboard')">Scoreboard</a></li>
@@ -819,7 +822,7 @@
 <!-- EVENTS -->
 <section id="events">
   <div class="section-label reveal">WHAT'S INSIDE</div>
-  <h2 class="section-title reveal reveal-delay-1">EVENTS</h2>
+  <h2 class="section-title reveal reveal-delay-1">  TECHNICAL</h2>
   <div class="events-grid">
 	    <div class="event-card reveal">
 	      <span class="event-num">01</span>
@@ -906,59 +909,58 @@
   </div>
 </div>
 
-<!-- HIGHLIGHT / BATTLEZONE -->
-<section id="highlight">
-  <div class="highlight-bg"></div>
-  <div class="highlight-content">
-    <div class="highlight-badge">SIGNATURE EVENT</div>
-    <h2 class="highlight-title">BATTLE<br/><em>ZONE</em></h2>
-    <div class="highlight-meta">
-      <div class="meta-item">
-        <div class="meta-val">20×20</div>
-        <div class="meta-key">FT ARENA</div>
-      </div>
-      <div class="meta-item">
-        <div class="meta-val">15KG</div>
-        <div class="meta-key">MAX WEIGHT</div>
-      </div>
-      <div class="meta-item">
-        <div class="meta-val">NOV 14</div>
-        <div class="meta-key">DAY ONE</div>
-      </div>
+<section id="cultural">
+  <div class="section-label reveal">WHAT'S INSIDE</div>
+  <h2 class="section-title reveal reveal-delay-1">CULTURAL</h2>
+  <div class="events-grid cultural-boxes">
+    <div class="event-card static reveal">
+      <span class="event-num">01</span>
+      <span class="event-icon">👑</span>
+      <div class="event-name">Mr &amp; Mrs Xtasy</div>
+      <div class="event-tag">STYLE ICON</div>
+      <p class="event-desc">A confidence-boosting personality contest showcasing talent, style, and stage presence.</p>
+      <div class="event-arrow">↗</div>
     </div>
-    <div class="highlight-prize">★ PRIZES WORTH ₹8,00,000 ★</div>
-    <button class="nav-cta" style="margin-top:32px;display:inline-block">REGISTER TEAM →</button>
-  </div>
-  <div class="highlight-visual">
-    <!-- SVG Robot illustration -->
-    <svg class="bot-svg" viewBox="0 0 200 280" xmlns="http://www.w3.org/2000/svg" style="animation: float 4s ease-in-out infinite">
-      <defs>
-        <filter id="glow2"><feGaussianBlur stdDeviation="3" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
-      </defs>
-      <!-- body -->
-      <rect x="50" y="90" width="100" height="90" rx="6" fill="none" stroke="#ff006e" stroke-width="1.5" filter="url(#glow2)" opacity="0.8"/>
-      <!-- head -->
-      <rect x="65" y="50" width="70" height="50" rx="4" fill="none" stroke="#ff006e" stroke-width="1.5" filter="url(#glow2)" opacity="0.8"/>
-      <!-- eyes -->
-      <circle cx="85" cy="72" r="8" fill="none" stroke="#00f5ff" stroke-width="1.5" filter="url(#glow2)"/>
-      <circle cx="115" cy="72" r="8" fill="none" stroke="#00f5ff" stroke-width="1.5" filter="url(#glow2)"/>
-      <circle cx="85" cy="72" r="3" fill="#00f5ff" opacity="0.8"/>
-      <circle cx="115" cy="72" r="3" fill="#00f5ff" opacity="0.8"/>
-      <!-- chest panel -->
-      <rect x="65" y="108" width="70" height="40" rx="2" fill="none" stroke="rgba(255,0,110,0.3)" stroke-width="1"/>
-      <line x1="65" y1="120" x2="135" y2="120" stroke="rgba(255,0,110,0.2)" stroke-width="0.5"/>
-      <line x1="65" y1="132" x2="135" y2="132" stroke="rgba(255,0,110,0.2)" stroke-width="0.5"/>
-      <!-- arms -->
-      <rect x="20" y="95" width="25" height="60" rx="4" fill="none" stroke="#ff006e" stroke-width="1" opacity="0.5"/>
-      <rect x="155" y="95" width="25" height="60" rx="4" fill="none" stroke="#ff006e" stroke-width="1" opacity="0.5"/>
-      <!-- legs -->
-      <rect x="65" y="185" width="28" height="60" rx="4" fill="none" stroke="#ff006e" stroke-width="1" opacity="0.5"/>
-      <rect x="107" y="185" width="28" height="60" rx="4" fill="none" stroke="#ff006e" stroke-width="1" opacity="0.5"/>
-      <!-- antenna -->
-      <line x1="100" y1="50" x2="100" y2="30" stroke="#00f5ff" stroke-width="1" opacity="0.7"/>
-      <circle cx="100" cy="26" r="4" fill="none" stroke="#00f5ff" stroke-width="1.5" filter="url(#glow2)"/>
-      <circle cx="100" cy="26" r="2" fill="#00f5ff" opacity="0.9"/>
-    </svg>
+    <div class="event-card static reveal reveal-delay-1">
+      <span class="event-num">02</span>
+      <span class="event-icon">🎨</span>
+      <div class="event-name">Face Painting</div>
+      <div class="event-tag">COLOR CANVAS</div>
+      <p class="event-desc">A creative event where imagination comes alive through colorful face art.</p>
+      <div class="event-arrow">↗</div>
+    </div>
+    <div class="event-card static reveal reveal-delay-2">
+      <span class="event-num">03</span>
+      <span class="event-icon">🎭</span>
+      <div class="event-name">Mime</div>
+      <div class="event-tag">SILENT EXPRESSION</div>
+      <p class="event-desc">A silent performance expressing powerful emotions and stories through gestures.</p>
+      <div class="event-arrow">↗</div>
+    </div>
+    <div class="event-card static reveal reveal-delay-3">
+      <span class="event-num">04</span>
+      <span class="event-icon">💃</span>
+      <div class="event-name">Synchronous Dance</div>
+      <div class="event-tag">PERFECT SYNC</div>
+      <p class="event-desc">A coordinated dance performance highlighting rhythm, teamwork, and perfect timing.</p>
+      <div class="event-arrow">↗</div>
+    </div>
+    <div class="event-card static reveal reveal-delay-1">
+      <span class="event-num">05</span>
+      <span class="event-icon">🎵</span>
+      <div class="event-name">Light Music</div>
+      <div class="event-tag">SOUL MELODY</div>
+      <p class="event-desc">A melodious singing event celebrating soulful and soothing musical performances.</p>
+      <div class="event-arrow">↗</div>
+    </div>
+    <div class="event-card static reveal reveal-delay-2">
+      <span class="event-num">06</span>
+      <span class="event-icon">🥗</span>
+      <div class="event-name">Vegetable Carving</div>
+      <div class="event-tag">EDIBLE ART</div>
+      <p class="event-desc">An artistic competition transforming vegetables into creative and decorative designs.</p>
+      <div class="event-arrow">↗</div>
+    </div>
   </div>
 </section>
 
