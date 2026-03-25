@@ -1,0 +1,1318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>XTASY '26 — The Pulse of Innovation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Rajdhani:wght@300;400;500;600;700&family=Share+Tech+Mono&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --bg: #020408;
+    --bg2: #050c14;
+    --neon: #00f5ff;
+    --neon2: #ff006e;
+    --neon3: #7b00ff;
+    --gold: #ffd600;
+    --text: #e0eaf5;
+    --muted: #4a6070;
+    --glass: rgba(0,245,255,0.04);
+    --border: rgba(0,245,255,0.12);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Rajdhani', sans-serif;
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  /* CUSTOM CURSOR */
+  #cursor {
+    position: fixed; width: 16px; height: 16px;
+    border: 2px solid var(--neon); border-radius: 50%;
+    pointer-events: none; z-index: 9999;
+    transform: translate(-50%,-50%);
+    transition: transform 0.1s, opacity 0.2s;
+    mix-blend-mode: screen;
+  }
+  #cursor-trail {
+    position: fixed; width: 40px; height: 40px;
+    border: 1px solid rgba(0,245,255,0.3); border-radius: 50%;
+    pointer-events: none; z-index: 9998;
+    transform: translate(-50%,-50%);
+    transition: left 0.15s ease, top 0.15s ease;
+    mix-blend-mode: screen;
+  }
+
+  /* NOISE OVERLAY */
+  body::before {
+    content: '';
+    position: fixed; inset: 0; z-index: 1;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none; opacity: 0.5;
+  }
+
+  /* GRID BACKGROUND */
+  body::after {
+    content: '';
+    position: fixed; inset: 0; z-index: 0;
+    background-image:
+      linear-gradient(rgba(0,245,255,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,245,255,0.03) 1px, transparent 1px);
+    background-size: 60px 60px;
+    pointer-events: none;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 18px 48px;
+    background: linear-gradient(to bottom, rgba(2,4,8,0.95), transparent);
+    backdrop-filter: blur(4px);
+  }
+  .nav-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2rem; letter-spacing: 4px;
+    color: var(--neon);
+    text-shadow: 0 0 20px var(--neon), 0 0 40px var(--neon);
+  }
+  .nav-links {
+    display: flex; gap: 32px; list-style: none;
+  }
+  .nav-links li {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.75rem; letter-spacing: 2px;
+    color: var(--muted); cursor: pointer;
+    transition: color 0.3s;
+    counter-increment: nav-item;
+  }
+  .nav-links li::before {
+    content: counter(nav-item, decimal-leading-zero) '/';
+    color: var(--neon2); margin-right: 6px; font-size: 0.65rem;
+  }
+  .nav-links li:hover { color: var(--neon); }
+  .nav-links li a {
+    color: inherit; text-decoration: none; display: inline-block; padding: 4px 0;
+  }
+  .nav-links li a:hover { color: var(--neon); }
+  .nav-cta {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.75rem; letter-spacing: 3px;
+    color: var(--bg); background: var(--neon);
+    border: none; padding: 10px 24px; cursor: pointer;
+    clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+    transition: background 0.3s, box-shadow 0.3s;
+  }
+  .nav-cta:hover { background: var(--neon2); box-shadow: 0 0 24px var(--neon2); }
+
+  /* HERO */
+  #hero {
+    position: relative; min-height: 100vh;
+    display: flex; flex-direction: column;
+    justify-content: center; align-items: center;
+    text-align: center; overflow: hidden;
+    padding: 100px 20px 60px;
+  }
+  .hero-bg {
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 50% 40%, rgba(0,245,255,0.07) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 40% at 20% 80%, rgba(123,0,255,0.1) 0%, transparent 60%),
+      radial-gradient(ellipse 40% 40% at 80% 20%, rgba(255,0,110,0.08) 0%, transparent 60%);
+  }
+  .hero-scanlines {
+    position: absolute; inset: 0;
+    background: repeating-linear-gradient(
+      0deg, transparent, transparent 3px, rgba(0,0,0,0.1) 3px, rgba(0,0,0,0.1) 4px
+    );
+    pointer-events: none; opacity: 0.4;
+  }
+  .hero-eyebrow {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.75rem; letter-spacing: 6px; color: var(--neon2);
+    margin-bottom: 24px; opacity: 0;
+    animation: fadeUp 0.8s 0.3s forwards;
+  }
+  .hero-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(7rem, 20vw, 18rem);
+    line-height: 0.9; letter-spacing: -4px;
+    background: linear-gradient(135deg, var(--neon) 0%, #fff 40%, var(--neon3) 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
+    filter: drop-shadow(0 0 40px rgba(0,245,255,0.4));
+    opacity: 0; animation: fadeUp 1s 0.5s forwards;
+    position: relative; z-index: 2;
+  }
+  .hero-subtitle {
+    font-family: 'Orbitron', monospace;
+    font-size: clamp(0.6rem, 2vw, 1rem);
+    letter-spacing: 8px; color: var(--muted);
+    margin-top: 12px; opacity: 0;
+    animation: fadeUp 0.8s 0.9s forwards;
+  }
+  .hero-date {
+    margin-top: 40px;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: clamp(1rem, 3vw, 1.8rem);
+    letter-spacing: 4px; color: var(--text);
+    opacity: 0; animation: fadeUp 0.8s 1.1s forwards;
+  }
+  .hero-date span { color: var(--neon); }
+  .hero-glitch {
+    position: absolute; top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(7rem, 20vw, 18rem);
+    color: transparent; white-space: nowrap;
+    -webkit-text-stroke: 1px rgba(255,0,110,0.15);
+    letter-spacing: -4px; pointer-events: none;
+    animation: glitchShift 4s infinite;
+  }
+  .hero-scroll {
+    position: absolute; bottom: 40px;
+    display: flex; flex-direction: column; align-items: center; gap: 8px;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.6rem; letter-spacing: 3px; color: var(--muted);
+    animation: pulse 2s infinite;
+  }
+  .scroll-line {
+    width: 1px; height: 60px;
+    background: linear-gradient(to bottom, var(--neon), transparent);
+    animation: extendDown 2s infinite;
+  }
+  .hero-stats {
+    display: flex; gap: 60px; margin-top: 60px;
+    opacity: 0; animation: fadeUp 0.8s 1.3s forwards;
+  }
+  .stat { text-align: center; }
+  .stat-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2.5rem; color: var(--neon);
+    text-shadow: 0 0 20px var(--neon);
+  }
+  .stat-label {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.6rem; letter-spacing: 2px; color: var(--muted);
+  }
+
+  /* MARQUEE */
+  .marquee-wrap {
+    overflow: hidden; padding: 16px 0;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    background: rgba(0,245,255,0.02);
+    position: relative; z-index: 2;
+  }
+  .marquee-track {
+    display: flex; gap: 0;
+    animation: marquee 20s linear infinite;
+    white-space: nowrap;
+  }
+  .marquee-wrap.reverse .marquee-track { animation-direction: reverse; }
+  .marquee-item {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1rem; letter-spacing: 4px;
+    padding: 0 40px; color: var(--muted);
+    display: inline-flex; align-items: center; gap: 20px;
+  }
+  .marquee-item::after { content: '///'; color: var(--neon2); }
+  .marquee-item.highlight { color: var(--neon); }
+
+  /* SECTIONS COMMON */
+  section { position: relative; z-index: 2; }
+  .section-label {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.65rem; letter-spacing: 5px;
+    color: var(--neon2); margin-bottom: 12px;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .section-label::before {
+    content: ''; display: block;
+    width: 40px; height: 1px; background: var(--neon2);
+  }
+  .section-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(3rem, 8vw, 6rem);
+    line-height: 1; letter-spacing: 2px;
+  }
+
+  /* ABOUT STRIP */
+  #about {
+    padding: 100px 48px;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 80px;
+    align-items: center;
+  }
+  .about-visual {
+    position: relative; height: 400px;
+  }
+  .about-ring {
+    position: absolute; border-radius: 50%;
+    border: 1px solid var(--border);
+    top: 50%; left: 50%; transform: translate(-50%,-50%);
+    animation: spin 20s linear infinite;
+  }
+  .about-ring:nth-child(1) { width: 300px; height: 300px; animation-duration: 20s; border-color: rgba(0,245,255,0.2); }
+  .about-ring:nth-child(2) { width: 220px; height: 220px; animation-duration: 15s; animation-direction: reverse; border-color: rgba(255,0,110,0.15); }
+  .about-ring:nth-child(3) { width: 140px; height: 140px; animation-duration: 10s; border-color: rgba(123,0,255,0.2); }
+  .about-center {
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2.5rem; color: var(--neon);
+    text-shadow: 0 0 30px var(--neon);
+    text-align: center;
+  }
+  .about-dot {
+    position: absolute; width: 8px; height: 8px; border-radius: 50%;
+    background: var(--neon); top: 0; left: 50%; margin-left: -4px;
+    box-shadow: 0 0 10px var(--neon);
+  }
+  .about-p {
+    font-size: 1.1rem; line-height: 1.8; color: #7a95a8;
+    margin-top: 20px;
+  }
+  .about-highlight { color: var(--neon); font-weight: 600; }
+
+  /* EVENTS GRID */
+  #events { padding: 100px 48px; }
+  .events-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px; margin-top: 60px;
+  }
+  .event-card {
+    background: var(--glass);
+    border: 1px solid var(--border);
+    padding: 40px 32px;
+    position: relative; overflow: hidden;
+    transition: border-color 0.3s, background 0.3s;
+    cursor: pointer;
+  }
+  .event-card::before {
+    content: ''; position: absolute;
+    top: 0; left: 0; right: 0; height: 2px;
+    background: var(--neon); transform: scaleX(0);
+    transform-origin: left; transition: transform 0.4s;
+  }
+  .event-card:hover { background: rgba(0,245,255,0.06); border-color: rgba(0,245,255,0.3); }
+  .event-card:hover::before { transform: scaleX(1); }
+  .event-card:nth-child(2)::before { background: var(--neon2); }
+  .event-card:nth-child(3)::before { background: var(--neon3); }
+  .event-card:nth-child(4)::before { background: var(--gold); }
+  .event-icon {
+    font-size: 2rem; margin-bottom: 20px;
+    display: block;
+  }
+  .event-num {
+    position: absolute; top: 20px; right: 24px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 4rem; color: rgba(255,255,255,0.03);
+    line-height: 1;
+  }
+  .event-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2rem; letter-spacing: 2px;
+    margin-bottom: 8px;
+  }
+  .event-tag {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.6rem; letter-spacing: 3px;
+    color: var(--neon); margin-bottom: 16px;
+    display: inline-block;
+    border: 1px solid rgba(0,245,255,0.2);
+    padding: 2px 8px;
+  }
+  .event-desc {
+    font-size: 0.9rem; color: #5a7080; line-height: 1.7;
+  }
+  .event-arrow {
+    position: absolute; bottom: 24px; right: 24px;
+    font-size: 1.2rem; color: var(--muted);
+    transition: color 0.3s, transform 0.3s;
+  }
+  .event-card:hover .event-arrow { color: var(--neon); transform: translate(4px,-4px); }
+
+  /* ROBOWARS / HIGHLIGHT SECTION */
+  #highlight {
+    padding: 0; overflow: hidden; position: relative;
+    min-height: 70vh; display: flex; align-items: center;
+  }
+  .highlight-bg {
+    position: absolute; inset: 0;
+    background: linear-gradient(135deg, rgba(255,0,110,0.05) 0%, var(--bg) 60%);
+    border-top: 1px solid rgba(255,0,110,0.1);
+    border-bottom: 1px solid rgba(255,0,110,0.1);
+  }
+  .highlight-content {
+    position: relative; z-index: 2;
+    padding: 80px 48px;
+    max-width: 600px;
+  }
+  .highlight-badge {
+    display: inline-block;
+    background: var(--neon2);
+    color: var(--bg); font-family: 'Share Tech Mono', monospace;
+    font-size: 0.65rem; letter-spacing: 4px;
+    padding: 4px 16px; margin-bottom: 24px;
+  }
+  .highlight-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(4rem, 10vw, 8rem);
+    line-height: 0.9; letter-spacing: 2px;
+    color: var(--text);
+  }
+  .highlight-title em { color: var(--neon2); font-style: normal; }
+  .highlight-meta {
+    margin-top: 32px; display: flex; gap: 40px;
+  }
+  .meta-item { }
+  .meta-val {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2rem; color: var(--neon2);
+  }
+  .meta-key {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.6rem; letter-spacing: 2px; color: var(--muted);
+  }
+  .highlight-prize {
+    margin-top: 40px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.2rem; letter-spacing: 3px;
+    color: var(--gold);
+    text-shadow: 0 0 20px var(--gold);
+  }
+  .highlight-visual {
+    position: absolute; right: 0; top: 0; bottom: 0;
+    width: 50%; display: flex; align-items: center; justify-content: center;
+  }
+  .bot-svg { width: 300px; opacity: 0.7; }
+
+  /* PASSES */
+  #passes { padding: 100px 48px; }
+  .passes-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 20px; margin-top: 60px;
+  }
+  .pass-card {
+    border: 1px solid var(--border);
+    background: var(--glass);
+    position: relative; overflow: hidden;
+    transition: transform 0.3s, box-shadow 0.3s;
+  }
+  .pass-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 60px rgba(0,245,255,0.1);
+  }
+  .pass-card.featured {
+    border-color: var(--neon);
+    box-shadow: 0 0 40px rgba(0,245,255,0.1);
+  }
+  .pass-header {
+    padding: 24px;
+    border-bottom: 1px solid var(--border);
+    background: rgba(0,245,255,0.03);
+  }
+  .pass-type {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.8rem; letter-spacing: 2px;
+  }
+  .pass-days {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.65rem; letter-spacing: 2px; color: var(--muted);
+  }
+  .pass-body { padding: 24px; }
+  .pass-price {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 3rem; color: var(--neon);
+    text-shadow: 0 0 20px rgba(0,245,255,0.4);
+    line-height: 1;
+  }
+  .pass-price sup { font-size: 1.2rem; vertical-align: top; margin-top: 8px; display: inline-block; }
+  .pass-features {
+    margin-top: 20px; list-style: none;
+    display: flex; flex-direction: column; gap: 8px;
+  }
+  .pass-features li {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.65rem; letter-spacing: 1px; color: var(--muted);
+    padding-left: 16px; position: relative;
+  }
+  .pass-features li::before { content: '›'; position: absolute; left: 0; color: var(--neon); }
+  .pass-btn {
+    display: block; width: 100%; margin-top: 24px;
+    padding: 12px; text-align: center; cursor: pointer;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.7rem; letter-spacing: 3px;
+    border: 1px solid var(--neon); color: var(--neon);
+    background: transparent; transition: all 0.3s;
+  }
+  .pass-btn:hover { background: var(--neon); color: var(--bg); }
+  .pass-card.featured .pass-btn { background: var(--neon); color: var(--bg); }
+  .pass-featured-badge {
+    position: absolute; top: 12px; right: 12px;
+    background: var(--neon); color: var(--bg);
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.55rem; letter-spacing: 2px;
+    padding: 2px 8px;
+  }
+  .pass-strip {
+    height: 4px;
+    background: repeating-linear-gradient(90deg, var(--neon) 0, var(--neon) 6px, transparent 6px, transparent 12px);
+  }
+  .pass-strip.red { background: repeating-linear-gradient(90deg, var(--neon2) 0, var(--neon2) 6px, transparent 6px, transparent 12px); }
+  .pass-strip.purple { background: repeating-linear-gradient(90deg, var(--neon3) 0, var(--neon3) 6px, transparent 6px, transparent 12px); }
+  .pass-strip.gold { background: repeating-linear-gradient(90deg, var(--gold) 0, var(--gold) 6px, transparent 6px, transparent 12px); }
+
+  /* PROSHOW */
+  #proshow { padding: 100px 48px; }
+  .proshow-layout {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 60px;
+    margin-top: 60px; align-items: center;
+  }
+  .proshow-artists { display: flex; flex-direction: column; gap: 16px; }
+  .artist-card {
+    border: 1px solid var(--border);
+    padding: 20px 24px;
+    display: flex; align-items: center; gap: 20px;
+    transition: border-color 0.3s, background 0.3s;
+    cursor: pointer;
+    position: relative; overflow: hidden;
+  }
+  .artist-card::after {
+    content: ''; position: absolute; inset: 0;
+    background: linear-gradient(90deg, transparent, rgba(0,245,255,0.03));
+    opacity: 0; transition: opacity 0.3s;
+  }
+  .artist-card:hover { border-color: rgba(0,245,255,0.3); }
+  .artist-card:hover::after { opacity: 1; }
+  .artist-avatar {
+    width: 56px; height: 56px; border-radius: 50%;
+    background: var(--glass); border: 2px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.5rem; flex-shrink: 0;
+  }
+  .artist-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.4rem; letter-spacing: 2px;
+  }
+  .artist-genre {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.6rem; letter-spacing: 2px; color: var(--muted);
+  }
+  .artist-day {
+    margin-left: auto; flex-shrink: 0;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.6rem; letter-spacing: 2px;
+    color: var(--neon2); border: 1px solid rgba(255,0,110,0.3);
+    padding: 2px 8px;
+  }
+  .proshow-info { }
+  .proshow-big {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(4rem, 9vw, 7rem);
+    line-height: 0.9; color: var(--text);
+  }
+  .proshow-big span { color: var(--neon); display: block; }
+  .proshow-desc {
+    margin-top: 24px; font-size: 1rem; color: #5a7080; line-height: 1.8;
+  }
+  .proshow-location {
+    margin-top: 32px; display: flex; align-items: center; gap: 12px;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.65rem; letter-spacing: 2px; color: var(--muted);
+  }
+  .location-dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--neon); box-shadow: 0 0 10px var(--neon);
+    animation: pulse 2s infinite;
+  }
+
+  /* TIMELINE */
+  #schedule { padding: 100px 48px; }
+  .timeline {
+    margin-top: 60px; position: relative;
+    padding-left: 40px;
+  }
+  .timeline::before {
+    content: ''; position: absolute; left: 0; top: 0; bottom: 0;
+    width: 1px; background: linear-gradient(to bottom, var(--neon), var(--neon3), var(--neon2));
+  }
+  .timeline-day { margin-bottom: 60px; }
+  .timeline-day-header {
+    position: relative; margin-bottom: 30px;
+  }
+  .timeline-day-header::before {
+    content: ''; position: absolute; left: -44px; top: 50%;
+    transform: translateY(-50%);
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--neon); box-shadow: 0 0 12px var(--neon);
+  }
+  .day-label {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2.5rem; letter-spacing: 3px;
+  }
+  .day-date {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.65rem; letter-spacing: 3px; color: var(--muted);
+  }
+  .timeline-events {
+    display: flex; flex-direction: column; gap: 12px;
+  }
+  .t-event {
+    display: flex; gap: 24px; align-items: flex-start;
+    padding: 16px 20px; border: 1px solid var(--border);
+    background: var(--glass); transition: border-color 0.3s;
+  }
+  .t-event:hover { border-color: rgba(0,245,255,0.2); }
+  .t-time {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.7rem; letter-spacing: 1px; color: var(--neon);
+    flex-shrink: 0; width: 80px;
+  }
+  .t-name {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 1rem; font-weight: 600;
+  }
+  .t-venue {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.6rem; letter-spacing: 1px; color: var(--muted);
+    margin-top: 4px;
+  }
+
+  /* SCOREBOARD */
+  #scoreboard { padding: 100px 48px; }
+  .scoreboard-grid {
+    display: grid; grid-template-columns: repeat(4, minmax(180px, 1fr));
+    gap: 18px; margin-top: 60px;
+  }
+  .team-card {
+    background: var(--glass); border: 1px solid var(--border);
+    padding: 18px; border-radius: 12px; text-align: center;
+  }
+  .team-name { font-family: 'Bebas Neue', sans-serif; font-size: 1.6rem; margin-bottom: 10px; }
+  .team-name a { color: inherit; text-decoration: none; cursor: pointer; }
+  .team-name a:hover { color: var(--neon); }
+  .team-score { font-family: 'Rajdhani', sans-serif; font-size: 2.7rem; color: var(--neon); margin-bottom: 12px; }
+
+  /* SPONSORS (placeholder) */
+  #sponsors { padding: 80px 48px; border-top: 1px solid var(--border); }
+  .sponsors-row {
+    display: flex; align-items: center; justify-content: center;
+    gap: 60px; margin-top: 40px; flex-wrap: wrap;
+  }
+  .sponsor-item {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.5rem; letter-spacing: 4px;
+    color: rgba(255,255,255,0.08);
+    transition: color 0.3s;
+    cursor: default;
+  }
+  .sponsor-item:hover { color: rgba(255,255,255,0.3); }
+
+  /* FOOTER */
+  footer {
+    padding: 60px 48px 40px;
+    border-top: 1px solid var(--border);
+    position: relative; z-index: 2;
+  }
+  .footer-top {
+    display: grid; grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 60px; margin-bottom: 60px;
+  }
+  .footer-brand { }
+  .footer-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 3rem; letter-spacing: 6px;
+    color: var(--neon); text-shadow: 0 0 30px var(--neon);
+    display: block; margin-bottom: 16px;
+  }
+  .footer-tagline {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.65rem; letter-spacing: 3px; color: var(--muted);
+  }
+  .footer-col-title {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.6rem; letter-spacing: 4px; color: var(--neon2);
+    margin-bottom: 20px;
+  }
+  .footer-links { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+  .footer-links li {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 0.9rem; color: var(--muted); cursor: pointer;
+    transition: color 0.3s;
+  }
+  .footer-links li:hover { color: var(--neon); }
+  .footer-bottom {
+    display: flex; justify-content: space-between; align-items: center;
+    padding-top: 30px; border-top: 1px solid var(--border);
+  }
+  .footer-copy {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.6rem; letter-spacing: 2px; color: var(--muted);
+  }
+  .footer-socials { display: flex; gap: 20px; }
+  .social-btn {
+    width: 36px; height: 36px;
+    border: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    color: var(--muted); font-size: 0.8rem; cursor: pointer;
+    transition: all 0.3s; text-decoration: none;
+  }
+  .social-btn:hover { border-color: var(--neon); color: var(--neon); box-shadow: 0 0 12px rgba(0,245,255,0.2); }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+  @keyframes spin {
+    from { transform: translate(-50%,-50%) rotate(0deg); }
+    to { transform: translate(-50%,-50%) rotate(360deg); }
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+  @keyframes extendDown {
+    0% { height: 20px; opacity: 1; }
+    100% { height: 60px; opacity: 0; }
+  }
+  @keyframes glitchShift {
+    0%, 95%, 100% { transform: translate(-50%,-50%); }
+    96% { transform: translate(calc(-50% + 6px), -50%); }
+    97% { transform: translate(calc(-50% - 6px), -50%); }
+    98% { transform: translate(-50%, calc(-50% + 3px)); }
+    99% { transform: translate(-50%,-50%); }
+  }
+  @keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-15px); }
+  }
+
+  /* MOBILE */
+  @media (max-width: 900px) {
+    nav { padding: 16px 24px; }
+    .nav-links { display: none; }
+    #about { grid-template-columns: 1fr; padding: 60px 24px; }
+    .about-visual { height: 280px; }
+    #events { padding: 60px 24px; }
+    .events-grid { grid-template-columns: 1fr; }
+    .passes-grid { grid-template-columns: 1fr 1fr; padding: 0; }
+    #passes { padding: 60px 24px; }
+    .proshow-layout { grid-template-columns: 1fr; }
+    #proshow { padding: 60px 24px; }
+    #schedule { padding: 60px 24px; }
+    footer { padding: 40px 24px 30px; }
+    .footer-top { grid-template-columns: 1fr 1fr; gap: 30px; }
+    .highlight-content { padding: 60px 24px; }
+    .highlight-visual { display: none; }
+    #sponsors { padding: 60px 24px; }
+  }
+  @media (max-width: 600px) {
+    .passes-grid { grid-template-columns: 1fr; }
+    .hero-stats { gap: 30px; }
+    .footer-top { grid-template-columns: 1fr; }
+  }
+
+  /* REVEAL ON SCROLL */
+  .reveal {
+    opacity: 0; transform: translateY(40px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.2s; }
+  .reveal-delay-3 { transition-delay: 0.3s; }
+  .reveal-delay-4 { transition-delay: 0.4s; }
+</style>
+</head>
+<body>
+
+<!-- CURSOR -->
+<div id="cursor"></div>
+<div id="cursor-trail"></div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">XTASY</div>
+  <ul class="nav-links" style="counter-reset: nav-item">
+    <li><a href="#hero" onclick="scrollToSection(event,'hero')">Home</a></li>
+    <li><a href="#events" onclick="scrollToSection(event,'events')">Events</a></li>
+    <li><a href="#highlight" onclick="scrollToSection(event,'highlight')">Battlezone</a></li>
+    <li><a href="#passes" onclick="scrollToSection(event,'passes')">Passes</a></li>
+    <li><a href="#proshow" onclick="scrollToSection(event,'proshow')">Proshow</a></li>
+    <li><a href="#schedule" onclick="scrollToSection(event,'schedule')">Schedule</a></li>
+    <li><a href="#scoreboard" onclick="scrollToSection(event,'scoreboard')">Scoreboard</a></li>
+  </ul>
+  <button class="nav-cta">LOGIN</button>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-scanlines"></div>
+  <div class="hero-glitch">XTASY</div>
+  <div class="hero-eyebrow">/// THE PULSE OF INNOVATION</div>
+  <h1 class="hero-title">XTASY</h1>
+  <div class="hero-subtitle">ANNUAL TECHNO-CULTURAL FESTIVAL</div>
+  <div class="hero-date">MARCH <span>26 · 27 · 28</span> · 2026</div>
+  <div class="hero-stats">
+    <div class="stat">
+      <div class="stat-num">100+</div>
+      <div class="stat-label">Attendees</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">50+</div>
+      <div class="stat-label">Events</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">₹5K+</div>
+      <div class="stat-label">Prize Pool</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">3</div>
+      <div class="stat-label">Days</div>
+    </div>
+  </div>
+  <div class="hero-scroll">
+    <div class="scroll-line"></div>
+    SCROLL
+  </div>
+</section>
+
+<!-- MARQUEE 1 -->
+<div class="marquee-wrap">
+  <div class="marquee-track">
+    <span class="marquee-item highlight">XTASY '26</span>
+    <span class="marquee-item">WORKSHOPS</span>
+    <span class="marquee-item">COMPETITIONS</span>
+    <span class="marquee-item highlight">BATTLEZONE</span>
+    <span class="marquee-item">HACKATHON</span>
+    <span class="marquee-item">PROSHOW</span>
+    <span class="marquee-item highlight">GAME ARENA</span>
+    <span class="marquee-item">ROBOTICS</span>
+    <span class="marquee-item">EXPO</span>
+    <!-- duplicate for infinite -->
+    <span class="marquee-item highlight">XTASY '25</span>
+    <span class="marquee-item">WORKSHOPS</span>
+    <span class="marquee-item">COMPETITIONS</span>
+    <span class="marquee-item highlight">BATTLEZONE</span>
+    <span class="marquee-item">HACKATHON</span>
+    <span class="marquee-item">PROSHOW</span>
+    <span class="marquee-item highlight">GAME ARENA</span>
+    <span class="marquee-item">ROBOTICS</span>
+    <span class="marquee-item">EXPO</span>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="about-visual">
+    <div class="about-ring"><div class="about-dot"></div></div>
+    <div class="about-ring"></div>
+    <div class="about-ring"></div>
+    <div class="about-center">
+      <div style="font-size:1rem;letter-spacing:2px;color:var(--muted);font-family:'Share Tech Mono',monospace">SINCE</div>
+      <div>2015</div>
+    </div>
+  </div>
+  <div>
+    <div class="section-label reveal">ABOUT THE FEST</div>
+    <h2 class="section-title reveal reveal-delay-1">WHERE TECH<br/>MEETS<br/><span style="color:var(--neon)">ADRENALINE</span></h2>
+    <p class="about-p reveal reveal-delay-2">
+      <span class="about-highlight">XTASY</span> is the premier annual techno-cultural festival — a high-voltage collision of innovation, creativity, and raw competitive energy. Hosted by the brightest minds on campus, XTASY brings together thousands of students, industry leaders, and visionaries across three electrifying days.
+    </p>
+    <p class="about-p reveal reveal-delay-3">
+      From bleeding-edge <span class="about-highlight">workshops</span> and <span class="about-highlight">hackathons</span> to pulse-pounding <span class="about-highlight">robotics battles</span> and live <span class="about-highlight">proshow concerts</span> — this is where legends are made.
+    </p>
+  </div>
+</section>
+
+<!-- EVENTS -->
+<section id="events">
+  <div class="section-label reveal">WHAT'S INSIDE</div>
+  <h2 class="section-title reveal reveal-delay-1">EVENTS</h2>
+  <div class="events-grid">
+    <div class="event-card reveal">
+      <span class="event-num">01</span>
+      <span class="event-icon">⚡</span>
+      <div class="event-name">HACKATHON</div>
+      <div class="event-tag">36 HRS · OPEN TRACK</div>
+      <p class="event-desc">Build something extraordinary in 36 hours. Teams compete across AI, Web3, IoT, and sustainability tracks. Grand Prize: ₹1,00,000.</p>
+      <div class="event-arrow">↗</div>
+    </div>
+    <div class="event-card reveal reveal-delay-1">
+      <span class="event-num">02</span>
+      <span class="event-icon">🤖</span>
+      <div class="event-name">ROBO WARS</div>
+      <div class="event-tag">COMBAT · 15KG CLASS</div>
+      <p class="event-desc">Steel meets sparks. Design, build and fight your bot in a 20×20 ft arena. Only the toughest machines survive the XTASY arena.</p>
+      <div class="event-arrow">↗</div>
+    </div>
+    <div class="event-card reveal reveal-delay-2">
+      <span class="event-num">03</span>
+      <span class="event-icon">🎮</span>
+      <div class="event-name">GAME ARENA</div>
+      <div class="event-tag">ESPORTS · LAN TOURNEY</div>
+      <p class="event-desc">BGMI, Valorant, Chess, and more. Battle in our massive LAN gaming arena. Show off your skills and claim the championship title.</p>
+      <div class="event-arrow">↗</div>
+    </div>
+    <div class="event-card reveal reveal-delay-3">
+      <span class="event-num">04</span>
+      <span class="event-icon">🔬</span>
+      <div class="event-name">WORKSHOPS</div>
+      <div class="event-tag">HANDS-ON · ALL LEVELS</div>
+      <p class="event-desc">Deep-dive workshops on AI/ML, Embedded Systems, Full-Stack Dev, UI/UX Design and Cybersecurity. Learn from industry experts.</p>
+      <div class="event-arrow">↗</div>
+    </div>
+    <div class="event-card reveal reveal-delay-1">
+      <span class="event-num">05</span>
+      <span class="event-icon">🎤</span>
+      <div class="event-name">TECH TALKS</div>
+      <div class="event-tag">KEYNOTES · PANELS</div>
+      <p class="event-desc">Inspiring keynotes from startup founders, researchers, and tech leaders. Real stories, real insights, real impact on your future.</p>
+      <div class="event-arrow">↗</div>
+    </div>
+    <div class="event-card reveal reveal-delay-2">
+      <span class="event-num">06</span>
+      <span class="event-icon">🚀</span>
+      <div class="event-name">STARTUP EXPO</div>
+      <div class="event-tag">PITCH · SHOWCASE</div>
+      <p class="event-desc">Student startups and tech demos take center stage. Pitch to investors, exhibit innovations, and discover the next big thing.</p>
+      <div class="event-arrow">↗</div>
+    </div>
+  </div>
+  <div style="margin-top:24px; text-align:center;">
+    <a class="nav-cta" href="events/more.html" style="display:inline-block; padding:10px 18px; font-size:0.75rem;">More Events</a>
+  </div>
+</section>
+
+<!-- MARQUEE 2 (reverse) -->
+<div class="marquee-wrap reverse">
+  <div class="marquee-track">
+    <span class="marquee-item">BATTLEZONE</span>
+    <span class="marquee-item highlight">ROBO WARS</span>
+    <span class="marquee-item">20×20 FT ARENA</span>
+    <span class="marquee-item highlight">15KG CLASS</span>
+    <span class="marquee-item">STEEL VS STEEL</span>
+    <span class="marquee-item highlight">₹8 LAKH PRIZE</span>
+    <span class="marquee-item">REGISTER NOW</span>
+    <span class="marquee-item">BATTLEZONE</span>
+    <span class="marquee-item highlight">ROBO WARS</span>
+    <span class="marquee-item">20×20 FT ARENA</span>
+    <span class="marquee-item highlight">15KG CLASS</span>
+    <span class="marquee-item">STEEL VS STEEL</span>
+    <span class="marquee-item highlight">₹8 LAKH PRIZE</span>
+    <span class="marquee-item">REGISTER NOW</span>
+  </div>
+</div>
+
+<!-- HIGHLIGHT / BATTLEZONE -->
+<section id="highlight">
+  <div class="highlight-bg"></div>
+  <div class="highlight-content">
+    <div class="highlight-badge">SIGNATURE EVENT</div>
+    <h2 class="highlight-title">BATTLE<br/><em>ZONE</em></h2>
+    <div class="highlight-meta">
+      <div class="meta-item">
+        <div class="meta-val">20×20</div>
+        <div class="meta-key">FT ARENA</div>
+      </div>
+      <div class="meta-item">
+        <div class="meta-val">15KG</div>
+        <div class="meta-key">MAX WEIGHT</div>
+      </div>
+      <div class="meta-item">
+        <div class="meta-val">NOV 14</div>
+        <div class="meta-key">DAY ONE</div>
+      </div>
+    </div>
+    <div class="highlight-prize">★ PRIZES WORTH ₹8,00,000 ★</div>
+    <button class="nav-cta" style="margin-top:32px;display:inline-block">REGISTER TEAM →</button>
+  </div>
+  <div class="highlight-visual">
+    <!-- SVG Robot illustration -->
+    <svg class="bot-svg" viewBox="0 0 200 280" xmlns="http://www.w3.org/2000/svg" style="animation: float 4s ease-in-out infinite">
+      <defs>
+        <filter id="glow2"><feGaussianBlur stdDeviation="3" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+      </defs>
+      <!-- body -->
+      <rect x="50" y="90" width="100" height="90" rx="6" fill="none" stroke="#ff006e" stroke-width="1.5" filter="url(#glow2)" opacity="0.8"/>
+      <!-- head -->
+      <rect x="65" y="50" width="70" height="50" rx="4" fill="none" stroke="#ff006e" stroke-width="1.5" filter="url(#glow2)" opacity="0.8"/>
+      <!-- eyes -->
+      <circle cx="85" cy="72" r="8" fill="none" stroke="#00f5ff" stroke-width="1.5" filter="url(#glow2)"/>
+      <circle cx="115" cy="72" r="8" fill="none" stroke="#00f5ff" stroke-width="1.5" filter="url(#glow2)"/>
+      <circle cx="85" cy="72" r="3" fill="#00f5ff" opacity="0.8"/>
+      <circle cx="115" cy="72" r="3" fill="#00f5ff" opacity="0.8"/>
+      <!-- chest panel -->
+      <rect x="65" y="108" width="70" height="40" rx="2" fill="none" stroke="rgba(255,0,110,0.3)" stroke-width="1"/>
+      <line x1="65" y1="120" x2="135" y2="120" stroke="rgba(255,0,110,0.2)" stroke-width="0.5"/>
+      <line x1="65" y1="132" x2="135" y2="132" stroke="rgba(255,0,110,0.2)" stroke-width="0.5"/>
+      <!-- arms -->
+      <rect x="20" y="95" width="25" height="60" rx="4" fill="none" stroke="#ff006e" stroke-width="1" opacity="0.5"/>
+      <rect x="155" y="95" width="25" height="60" rx="4" fill="none" stroke="#ff006e" stroke-width="1" opacity="0.5"/>
+      <!-- legs -->
+      <rect x="65" y="185" width="28" height="60" rx="4" fill="none" stroke="#ff006e" stroke-width="1" opacity="0.5"/>
+      <rect x="107" y="185" width="28" height="60" rx="4" fill="none" stroke="#ff006e" stroke-width="1" opacity="0.5"/>
+      <!-- antenna -->
+      <line x1="100" y1="50" x2="100" y2="30" stroke="#00f5ff" stroke-width="1" opacity="0.7"/>
+      <circle cx="100" cy="26" r="4" fill="none" stroke="#00f5ff" stroke-width="1.5" filter="url(#glow2)"/>
+      <circle cx="100" cy="26" r="2" fill="#00f5ff" opacity="0.9"/>
+    </svg>
+  </div>
+</section>
+
+<!-- PASSES -->
+<section id="passes">
+  <div class="section-label reveal">ACCESS</div>
+  <h2 class="section-title reveal reveal-delay-1">PASSES</h2>
+  <div class="passes-grid">
+    <!-- Day 1 -->
+    <div class="pass-card reveal">
+      <div class="pass-strip red"></div>
+      <div class="pass-header">
+        <div class="pass-type" style="color:var(--neon2)">DAY ONE</div>
+        <div class="pass-days">NOV 14 · 2025</div>
+      </div>
+      <div class="pass-body">
+        <div class="pass-price" style="color:var(--neon2)"><sup>₹</sup>299</div>
+        <ul class="pass-features">
+          <li>BattleZone access</li>
+          <li>All workshops</li>
+          <li>Food stalls</li>
+        </ul>
+        <button class="pass-btn" style="border-color:var(--neon2);color:var(--neon2)">GET PASS</button>
+      </div>
+    </div>
+    <!-- Day 2 -->
+    <div class="pass-card reveal reveal-delay-1">
+      <div class="pass-strip purple"></div>
+      <div class="pass-header">
+        <div class="pass-type" style="color:var(--neon3)">DAY TWO</div>
+        <div class="pass-days">NOV 15 · 2025</div>
+      </div>
+      <div class="pass-body">
+        <div class="pass-price" style="color:var(--neon3)"><sup>₹</sup>499</div>
+        <ul class="pass-features">
+          <li>Hackathon entry</li>
+          <li>Game Arena</li>
+          <li>Tech Talks</li>
+        </ul>
+        <button class="pass-btn" style="border-color:var(--neon3);color:var(--neon3)">GET PASS</button>
+      </div>
+    </div>
+    <!-- Day 3 / Proshow -->
+    <div class="pass-card reveal reveal-delay-2">
+      <div class="pass-strip gold"></div>
+      <div class="pass-header">
+        <div class="pass-type" style="color:var(--gold)">PROSHOW</div>
+        <div class="pass-days">NOV 16 · 2025</div>
+      </div>
+      <div class="pass-body">
+        <div class="pass-price" style="color:var(--gold)"><sup>₹</sup>799</div>
+        <ul class="pass-features">
+          <li>Live performances</li>
+          <li>Startup Expo</li>
+          <li>Awards Night</li>
+        </ul>
+        <button class="pass-btn" style="border-color:var(--gold);color:var(--gold)">GET PASS</button>
+      </div>
+    </div>
+    <!-- All Access -->
+    <div class="pass-card featured reveal reveal-delay-3">
+      <div class="pass-featured-badge">BEST VALUE</div>
+      <div class="pass-strip"></div>
+      <div class="pass-header">
+        <div class="pass-type">ALL ACCESS</div>
+        <div class="pass-days">NOV 14–16 · 2025</div>
+      </div>
+      <div class="pass-body">
+        <div class="pass-price"><sup>₹</sup>1499</div>
+        <ul class="pass-features">
+          <li>All 3 days included</li>
+          <li>Priority entry</li>
+          <li>Exclusive merch kit</li>
+          <li>VIP lounge access</li>
+          <li>All events + proshow</li>
+        </ul>
+        <button class="pass-btn">GET PASS</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROSHOW -->
+<section id="proshow">
+  <div class="section-label reveal">NIGHT OF NIGHTS</div>
+  <h2 class="section-title reveal reveal-delay-1">PROSHOW</h2>
+  <div class="proshow-layout">
+    <div class="proshow-artists reveal">
+      <div class="artist-card">
+        <div class="artist-avatar">🎵</div>
+        <div>
+          <div class="artist-name">ARJUN ARJUN</div>
+          <div class="artist-genre">INDIE POP · TAMIL</div>
+        </div>
+        <div class="artist-day">DAY 1</div>
+      </div>
+      <div class="artist-card">
+        <div class="artist-avatar">🎤</div>
+        <div>
+          <div class="artist-name">NOVA BEATS</div>
+          <div class="artist-genre">HIP HOP · RAPPER</div>
+        </div>
+        <div class="artist-day">DAY 2</div>
+      </div>
+      <div class="artist-card">
+        <div class="artist-avatar">🎸</div>
+        <div>
+          <div class="artist-name">SIGNAL LOST</div>
+          <div class="artist-genre">ROCK BAND · LIVE</div>
+        </div>
+        <div class="artist-day">DAY 3</div>
+      </div>
+      <div class="artist-card">
+        <div class="artist-avatar">🎹</div>
+        <div>
+          <div class="artist-name">DJ MATRIX</div>
+          <div class="artist-genre">EDM · BASS DROP</div>
+        </div>
+        <div class="artist-day">DAY 3</div>
+      </div>
+    </div>
+    <div class="proshow-info reveal reveal-delay-2">
+      <div class="proshow-big">LIVE<br/><span>BIGGER</span><br/>LOUDER</div>
+      <p class="proshow-desc">Three nights. Four artists. One unforgettable experience. The XTASY Proshow is where boundaries dissolve and the music takes over — under the open sky, lit by lasers and charged by 20,000 voices.</p>
+      <div class="proshow-location">
+        <div class="location-dot"></div>
+        MAIN GROUNDS · CAMPUS AMPHITHEATRE
+      </div>
+      <div style="margin-top:32px;display:flex;gap:16px;flex-wrap:wrap">
+        <button class="nav-cta">BUY PROSHOW PASS</button>
+        <button class="nav-cta" style="background:transparent;color:var(--neon);border:1px solid var(--neon)">VIEW LINEUP →</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SCHEDULE -->
+<section id="schedule">
+  <div class="section-label reveal">ITINERARY</div>
+  <h2 class="section-title reveal reveal-delay-1">SCHEDULE</h2>
+  <div class="timeline">
+    <div class="timeline-day reveal">
+      <div class="timeline-day-header">
+        <div class="day-label" style="color:var(--neon2)">DAY ONE</div>
+        <div class="day-date">NOVEMBER 14 · FRIDAY</div>
+      </div>
+      <div class="timeline-events">
+        <div class="t-event"><div class="t-time">09:00 AM</div><div><div class="t-name">Opening Ceremony & Keynote</div><div class="t-venue">Main Auditorium</div></div></div>
+        <div class="t-event"><div class="t-time">10:30 AM</div><div><div class="t-name">BattleZone — Round 1</div><div class="t-venue">Tech Arena Block C</div></div></div>
+        <div class="t-event"><div class="t-time">11:00 AM</div><div><div class="t-name">Workshop: AI & Neural Networks</div><div class="t-venue">Lab Complex 2</div></div></div>
+        <div class="t-event"><div class="t-time">02:00 PM</div><div><div class="t-name">BattleZone — Quarter Finals</div><div class="t-venue">Tech Arena Block C</div></div></div>
+        <div class="t-event"><div class="t-time">07:00 PM</div><div><div class="t-name">Proshow Night 1 — Arjun Arjun</div><div class="t-venue">Main Amphitheatre</div></div></div>
+      </div>
+      <div style="margin-top:18px; text-align:right;">
+        <a class="nav-cta" href="schedule/day-one.html" style="display:inline-block; padding:10px 18px; font-size:0.75rem;">More</a>
+      </div>
+    </div>
+    <div class="timeline-day reveal">
+      <div class="timeline-day-header">
+        <div class="day-label" style="color:var(--neon3)">DAY TWO</div>
+        <div class="day-date">NOVEMBER 15 · SATURDAY</div>
+      </div>
+      <div class="timeline-events">
+        <div class="t-event"><div class="t-time">09:00 AM</div><div><div class="t-name">Hackathon Kickoff</div><div class="t-venue">Innovation Hub</div></div></div>
+        <div class="t-event"><div class="t-time">10:00 AM</div><div><div class="t-name">Game Arena — Valorant Tourney</div><div class="t-venue">E-Sports Zone</div></div></div>
+        <div class="t-event"><div class="t-time">12:00 PM</div><div><div class="t-name">Tech Talk: Future of AI</div><div class="t-venue">Lecture Hall 1</div></div></div>
+        <div class="t-event"><div class="t-time">03:00 PM</div><div><div class="t-name">BattleZone — Semi Finals</div><div class="t-venue">Tech Arena Block C</div></div></div>
+        <div class="t-event"><div class="t-time">07:30 PM</div><div><div class="t-name">Proshow Night 2 — Nova Beats</div><div class="t-venue">Main Amphitheatre</div></div></div>
+      </div>
+      <div style="margin-top:18px; text-align:right;">
+        <a class="nav-cta" href="schedule/day-two.html" style="display:inline-block; padding:10px 18px; font-size:0.75rem;">More</a>
+      </div>
+    </div>
+    <div class="timeline-day reveal">
+      <div class="timeline-day-header">
+        <div class="day-label" style="color:var(--gold)">DAY THREE</div>
+        <div class="day-date">NOVEMBER 16 · SUNDAY</div>
+      </div>
+      <div class="timeline-events">
+        <div class="t-event"><div class="t-time">10:00 AM</div><div><div class="t-name">Hackathon — Final Presentations</div><div class="t-venue">Innovation Hub</div></div></div>
+        <div class="t-event"><div class="t-time">12:00 PM</div><div><div class="t-name">Startup Expo Opens</div><div class="t-venue">Exhibition Hall</div></div></div>
+        <div class="t-event"><div class="t-time">02:00 PM</div><div><div class="t-name">BattleZone Grand Final</div><div class="t-venue">Tech Arena Block C</div></div></div>
+        <div class="t-event"><div class="t-time">05:00 PM</div><div><div class="t-name">Awards & Closing Ceremony</div><div class="t-venue">Main Auditorium</div></div></div>
+        <div class="t-event"><div class="t-time">07:00 PM</div><div><div class="t-name">Grand Proshow — DJ Matrix + Signal Lost</div><div class="t-venue">Main Amphitheatre</div></div></div>
+      </div>
+      <div style="margin-top:18px; text-align:right;">
+        <a class="nav-cta" href="schedule/day-three.html" style="display:inline-block; padding:10px 18px; font-size:0.75rem;">More</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SCOREBOARD -->
+<section id="scoreboard">
+  <div class="section-label reveal">LIVE LEADERBOARD</div>
+  <h2 class="section-title reveal reveal-delay-1">TEAM SCOREBOARD</h2>
+  <div class="scoreboard-grid">
+    <div class="team-card reveal" data-team="1">
+      <div class="team-name"><a href="teams/adhera.html">Team Adhera</a></div>
+      <div class="team-score" id="team-score-1">12</div>
+    </div>
+    <div class="team-card reveal reveal-delay-1" data-team="2">
+      <div class="team-name"><a href="teams/kalhaar.html">Team Kalhaar</a></div>
+      <div class="team-score" id="team-score-2">8</div>
+    </div>
+    <div class="team-card reveal reveal-delay-2" data-team="3">
+      <div class="team-name"><a href="teams/assassins.html">Team Assassins</a></div>
+      <div class="team-score" id="team-score-3">15</div>
+    </div>
+    <div class="team-card reveal reveal-delay-3" data-team="4">
+      <div class="team-name"><a href="teams/crusaders.html">Team Crusaders</a></div>
+      <div class="team-score" id="team-score-4">10</div>
+    </div>
+  </div>
+</section>
+
+<!-- SPONSORS -->
+<section id="sponsors">
+  <div class="section-label reveal" style="justify-content:center;margin-bottom:16px">OUR SUPPORTERS</div>
+  <div class="sponsors-row reveal">
+    <div class="sponsor-item">TECHCORP</div>
+    <div class="sponsor-item">NEXWAVE</div>
+    <div class="sponsor-item">DATAVAULT</div>
+    <div class="sponsor-item">ORBIX</div>
+    <div class="sponsor-item">SYNAPSE</div>
+    <div class="sponsor-item">GRIDLABS</div>
+    <div class="sponsor-item">PULSIFY</div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-top">
+    <div class="footer-brand">
+      <span class="footer-logo">XTASY</span>
+      <div class="footer-tagline">/// THE PULSE OF INNOVATION</div>
+      <p style="font-family:'Share Tech Mono',monospace;font-size:0.6rem;color:var(--muted);margin-top:20px;line-height:1.8">
+        EMAIL: contact@xtasy.in<br/>
+        PHONE: +91 98765 43210
+      </p>
+    </div>
+    <div>
+      <div class="footer-col-title">[ QUICK LINKS ]</div>
+      <ul class="footer-links">
+        <li>Home</li>
+        <li>Events</li>
+        <li>Workshops</li>
+        <li>Schedule</li>
+        <li>Passes</li>
+        <li>Team</li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-col-title">[ EVENTS ]</div>
+      <ul class="footer-links">
+        <li>Hackathon</li>
+        <li>BattleZone</li>
+        <li>Game Arena</li>
+        <li>Tech Talks</li>
+        <li>Startup Expo</li>
+        <li>Proshow</li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-col-title">[ INFO ]</div>
+      <ul class="footer-links">
+        <li>Accommodation</li>
+        <li>Campus Map</li>
+        <li>FAQs</li>
+        <li>Sponsorship</li>
+        <li>Privacy Policy</li>
+        <li>Terms of Service</li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="footer-copy">© XTASY 2025 · ALL RIGHTS RESERVED · BUILT WITH PASSION</div>
+    <div class="footer-socials">
+      <a class="social-btn" href="#" title="Instagram">ig</a>
+      <a class="social-btn" href="#" title="Twitter">tw</a>
+      <a class="social-btn" href="#" title="LinkedIn">in</a>
+      <a class="social-btn" href="#" title="YouTube">yt</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Custom cursor
+  const cursor = document.getElementById('cursor');
+  const trail = document.getElementById('cursor-trail');
+  let tx = 0, ty = 0;
+  document.addEventListener('mousemove', e => {
+    cursor.style.left = e.clientX + 'px';
+    cursor.style.top = e.clientY + 'px';
+    setTimeout(() => {
+      trail.style.left = e.clientX + 'px';
+      trail.style.top = e.clientY + 'px';
+    }, 80);
+  });
+  document.addEventListener('mousedown', () => cursor.style.transform = 'translate(-50%,-50%) scale(2)');
+  document.addEventListener('mouseup', () => cursor.style.transform = 'translate(-50%,-50%) scale(1)');
+
+  // Smooth scroll
+  function scrollToSection(e, id) {
+    if (e && e.preventDefault) e.preventDefault();
+    const section = document.getElementById(id);
+    if (!section) return;
+    section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  function scrollTo(id) {
+    scrollToSection(null, id);
+  }
+
+  // Scroll reveal
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.15 });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  // Nav highlight on scroll
+  const sections = ['hero','about','events','highlight','passes','proshow','schedule','scoreboard'];
+  window.addEventListener('scroll', () => {
+    const scrollY = window.scrollY;
+    sections.forEach((id, i) => {
+      const el = document.getElementById(id);
+      if (el && el.offsetTop - 100 <= scrollY) {
+        document.querySelectorAll('.nav-links li').forEach((li, j) => {
+          li.style.color = j === i ? 'var(--neon)' : '';
+        });
+      }
+    });
+  });
+
+  // Artist card glitch hover
+  document.querySelectorAll('.artist-card').forEach(card => {
+    card.addEventListener('mouseenter', () => {
+      card.style.transform = `translate(${(Math.random()-0.5)*4}px, ${(Math.random()-0.5)*4}px)`;
+      setTimeout(() => card.style.transform = '', 80);
+    });
+  });
+</script>
+</body>
+</html>
