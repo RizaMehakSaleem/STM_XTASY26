@@ -115,21 +115,65 @@
     display: flex; flex-direction: column;
     justify-content: center; align-items: center;
     text-align: center; overflow: hidden;
-    padding: 100px 20px 60px;
+    padding: 110px 20px 80px;
+    isolation: isolate;
+  }
+  .hero-video {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    min-width: 100%;
+    min-height: 100%;
+    width: auto;
+    height: auto;
+    object-fit: cover;
+    z-index: 0;
+    opacity: 0.65;
+    filter: saturate(1.1) contrast(1.0) brightness(0.55);
+  }
+  /* dark scrim — transparent at top, nearly opaque at bottom */
+  .hero-scrim {
+    position: absolute; inset: 0;
+    z-index: 1;
+    background:
+      linear-gradient(
+        to bottom,
+        rgba(2,4,8,0.10) 0%,
+        rgba(2,4,8,0.20) 45%,
+        rgba(2,4,8,0.88) 65%,
+        rgba(2,4,8,0.97) 100%
+      );
+    pointer-events: none;
+  }
+  .hero-lower {
+    position: relative;
+    z-index: 5;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+    padding: 20px 60px 28px;
+    margin-top: 32px;
   }
   .hero-bg {
     position: absolute; inset: 0;
+    z-index: 2;
     background:
-      radial-gradient(ellipse 80% 60% at 50% 40%, rgba(0,245,255,0.07) 0%, transparent 70%),
-      radial-gradient(ellipse 40% 40% at 20% 80%, rgba(123,0,255,0.1) 0%, transparent 60%),
-      radial-gradient(ellipse 40% 40% at 80% 20%, rgba(255,0,110,0.08) 0%, transparent 60%);
+      radial-gradient(ellipse 80% 60% at 50% 40%, rgba(0,245,255,0.06) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 40% at 20% 80%, rgba(123,0,255,0.08) 0%, transparent 60%),
+      radial-gradient(ellipse 40% 40% at 80% 20%, rgba(255,0,110,0.06) 0%, transparent 60%);
   }
   .hero-scanlines {
     position: absolute; inset: 0;
+    z-index: 3;
     background: repeating-linear-gradient(
-      0deg, transparent, transparent 3px, rgba(0,0,0,0.1) 3px, rgba(0,0,0,0.1) 4px
+      0deg, transparent, transparent 3px, rgba(0,0,0,0.08) 3px, rgba(0,0,0,0.08) 4px
     );
     pointer-events: none; opacity: 0.4;
+  }
+  .hero-eyebrow, .hero-title, .hero-subtitle, .hero-date, .hero-stats, .hero-scroll {
+    position: relative;
+    z-index: 5;
   }
   .hero-eyebrow {
     font-family: 'Share Tech Mono', monospace;
@@ -151,28 +195,25 @@
   .hero-subtitle {
     font-family: 'Orbitron', monospace;
     font-size: clamp(0.6rem, 2vw, 1rem);
-    letter-spacing: 8px; color: var(--muted);
+    letter-spacing: 5px; color: var(--muted);
     margin-top: 12px; opacity: 0;
     animation: fadeUp 0.8s 0.9s forwards;
   }
   .hero-date {
-    margin-top: 40px;
+    margin-top: 0;
     font-family: 'Share Tech Mono', monospace;
-    font-size: clamp(1rem, 3vw, 1.8rem);
-    letter-spacing: 4px; color: var(--text);
+    font-size: clamp(1rem, 2.4vw, 1.5rem);
+    letter-spacing: 1.5px; color: var(--text);
     opacity: 0; animation: fadeUp 0.8s 1.1s forwards;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    text-shadow: 0 0 24px rgba(0,0,0,1), 0 2px 16px rgba(0,0,0,1);
   }
-  .hero-date span { color: var(--neon); }
-  .hero-glitch {
-    position: absolute; top: 50%; left: 50%;
-    transform: translate(-50%, -50%);
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: clamp(7rem, 20vw, 18rem);
-    color: transparent; white-space: nowrap;
-    -webkit-text-stroke: 1px rgba(255,0,110,0.15);
-    letter-spacing: -4px; pointer-events: none;
-    animation: glitchShift 4s infinite;
-  }
+  .hero-date-main { color: var(--neon); text-shadow: 0 0 20px rgba(0,245,255,0.7), 0 0 40px rgba(0,0,0,1); }
+  .hero-glitch { display: none; }
   .hero-scroll {
     position: absolute; bottom: 40px;
     display: flex; flex-direction: column; align-items: center; gap: 8px;
@@ -186,18 +227,21 @@
     animation: extendDown 2s infinite;
   }
   .hero-stats {
-    display: flex; gap: 60px; margin-top: 60px;
+    display: flex; gap: 48px; margin-top: 20px;
+    flex-wrap: wrap; justify-content: center;
     opacity: 0; animation: fadeUp 0.8s 1.3s forwards;
+    max-width: 600px;
   }
   .stat { text-align: center; }
   .stat-num {
     font-family: 'Bebas Neue', sans-serif;
     font-size: 2.5rem; color: var(--neon);
-    text-shadow: 0 0 20px var(--neon);
+    text-shadow: 0 0 20px var(--neon), 0 0 50px rgba(0,0,0,1);
   }
   .stat-label {
     font-family: 'Share Tech Mono', monospace;
     font-size: 0.6rem; letter-spacing: 2px; color: var(--muted);
+    text-shadow: 0 0 12px rgba(0,0,0,1);
   }
 
   /* MARQUEE */
@@ -688,6 +732,10 @@
   /* MOBILE */
   @media (max-width: 900px) {
     nav { padding: 16px 24px; }
+    #hero { padding: 110px 18px 48px; }
+    .hero-subtitle { letter-spacing: 3px; }
+    .hero-date { gap: 8px; font-size: clamp(0.9rem, 3.5vw, 1.2rem); }
+    .hero-stats { gap: 26px; margin-top: 38px; flex-wrap: wrap; justify-content: center; }
     .nav-links { display: none; }
     #about { grid-template-columns: 1fr; padding: 60px 24px; }
     .about-visual { height: 280px; }
@@ -703,7 +751,11 @@
     #sponsors { padding: 60px 24px; }
   }
   @media (max-width: 600px) {
-    .hero-stats { gap: 30px; }
+    .hero-title { font-size: clamp(5rem, 22vw, 7.5rem); }
+    .hero-subtitle { font-size: 0.62rem; letter-spacing: 2px; }
+    .hero-date { margin-top: 22px; gap: 6px; }
+    .hero-stats { gap: 18px; margin-top: 28px; }
+    .stat-num { font-size: 2rem; }
     .footer-top { grid-template-columns: 1fr; }
   }
 
@@ -740,29 +792,34 @@
 
 <!-- HERO -->
 <section id="hero">
+  <video class="hero-video" autoplay muted loop playsinline preload="auto" aria-label="XTASY intro video">
+    <source src="resources/Techno_Fest_Video_Generation (1).mp4" type="video/mp4"/>
+  </video>
+  <div class="hero-scrim"></div>
   <div class="hero-bg"></div>
   <div class="hero-scanlines"></div>
-  <div class="hero-glitch">XTASY</div>
   <div class="hero-eyebrow">/// THE PULSE OF INNOVATION</div>
   <h1 class="hero-title">XTASY</h1>
   <div class="hero-subtitle">ANNUAL TECHNO-CULTURAL FESTIVAL</div>
-  <div class="hero-date">MARCH <span>26 · 27 · 28</span> · 2026</div>
-  <div class="hero-stats">
-    <div class="stat">
-      <div class="stat-num">100+</div>
-      <div class="stat-label">Attendees</div>
-    </div>
-    <div class="stat">
-      <div class="stat-num">50+</div>
-      <div class="stat-label">Events</div>
-    </div>
-    <div class="stat">
-      <div class="stat-num">₹5K+</div>
-      <div class="stat-label">Prize Pool</div>
-    </div>
-    <div class="stat">
-      <div class="stat-num">3</div>
-      <div class="stat-label">Days</div>
+  <div class="hero-lower">
+    <div class="hero-date"><span>MARCH</span><span class="hero-date-main">26 · 27 · 28</span><span>2026</span></div>
+    <div class="hero-stats">
+      <div class="stat">
+        <div class="stat-num">100+</div>
+        <div class="stat-label">Attendees</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">50+</div>
+        <div class="stat-label">Events</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">₹5K+</div>
+        <div class="stat-label">Prize Pool</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">3</div>
+        <div class="stat-label">Days</div>
+      </div>
     </div>
   </div>
   <div class="hero-scroll">
